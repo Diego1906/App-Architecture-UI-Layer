@@ -17,7 +17,6 @@
 package com.example.android.guesstheword.screens.game
 
 import android.os.Bundle
-import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,11 +58,6 @@ class GameFragment : Fragment() {
         // the binding can observe LiveData updates
         dataBinding.setLifecycleOwner(this)
 
-        // Você pode usar DateUtils.formatElapsedTime para formatar corretamente a sequência longa para uma hora
-        viewModel.currentTime.observe(this, Observer { newTime ->
-            dataBinding.timerText.text = DateUtils.formatElapsedTime(newTime)
-        })
-
         // Sets up event listening to navigate the player when the game is finished
         viewModel.eventGameFinish.observe(this, Observer { isFinished ->
             if (isFinished) {
@@ -74,7 +68,6 @@ class GameFragment : Fragment() {
                 viewModel.onGameFinishComplete()
             }
         })
-
 
         return dataBinding.root
     }
