@@ -55,18 +55,16 @@ class GameFragment : Fragment() {
         // data in the VieWModel
         dataBinding.gameViewModel = viewModel
 
+        // Specify the current activity as the lifecycle owner of the binding. This is used so that
+        // the binding can observe LiveData updates
         dataBinding.setLifecycleOwner(this)
 
-        /** Setting up LiveData observation relationship **/
-        viewModel.score.observe(this, Observer { newScore ->
-            dataBinding.scoreText.text = newScore.toString()
+        // Você pode usar DateUtils.formatElapsedTime para formatar corretamente a sequência longa para uma hora
+        viewModel.currentTime.observe(this, Observer { newTime ->
+            dataBinding.timerText.text = DateUtils.formatElapsedTime(newTime)
         })
 
-        viewModel.word.observe(this, Observer { newWord ->
-            dataBinding.wordText.text = newWord
-        })
-
-        // Configura a escuta do evento para navegar no jogador quando o jogo terminar
+        // Sets up event listening to navigate the player when the game is finished
         viewModel.eventGameFinish.observe(this, Observer { isFinished ->
             if (isFinished) {
                 val currentScore = viewModel.score.value ?: 0
@@ -77,10 +75,6 @@ class GameFragment : Fragment() {
             }
         })
 
-        // Você pode usar DateUtils.formatElapsedTime para formatar corretamente a sequência longa para uma hora
-        viewModel.currentTime.observe(this, Observer { newTime ->
-            dataBinding.timerText.text = DateUtils.formatElapsedTime(newTime)
-        })
 
         return dataBinding.root
     }
